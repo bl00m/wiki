@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method='post'>
+	<h2> Please signup</h2>
+	<table>
+		<tr>
+			<td>
+				Username
+			</td>
+			<td>
+				<input type='text' name='username' value='{{username}}'/>
+			</td>
+			<td id ='error'>
+				{{error_username}}
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Password
+			</td>
+			<td>
+				<input type='password' name='passowrd' value='{{passowrd}}'/>
+			</td>
+			<td id='error'>
+				{{error_password}}
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Confirm password
+			</td>
+			<td>
+				<input type='password' name='confirm' value='{{confirm}}'/>
+			</td>
+			<td id='error'>
+				{{error_confirm}}
+			</td>
+		</tr>
+
+		<tr>
+			<td>
+				Email (optional)
+			</td>
+			<td>
+				<input type='text' name='email' value='{{email}}'/>
+			</td>
+			<td id='error'>
+				{{error_email}}
+			</td>
+		</tr>
+	</table>
+	<input type='submit' text='Submit'/>
+</form>
+{% endblock %}

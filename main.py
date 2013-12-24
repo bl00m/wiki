@@ -43,12 +43,12 @@ class MainHandler(webapp2.RequestHandler):
 
 class Signup(MainHandler):
     def get(self):
-        self.render("base.html")
+        self.render("signup.html")
     def post(self):
         self.user = self.request.get('user')
 
         params = dict(user = self.user)
-        self.render('base.html')
+        self.render('signup.html')
         
 app = webapp2.WSGIApplication([('/', MainHandler),
                                ('/signup', Signup),
