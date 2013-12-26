@@ -63,3 +63,8 @@ body, html {
 #error {
 	color:red;
 }
+
+#label {
+	display:block;
+	text-align: right;
+}

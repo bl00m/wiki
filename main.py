@@ -16,6 +16,7 @@
 #
 import os
 import user
+from util import valid_name, valid_pass, valid_email
 
 import webapp2
 import jinja2
@@ -41,16 +42,43 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write('Hello world!')
 
+class Front(MainHandler):
+    def get(self):
+        self.render("base.html")
+
 class Signup(MainHandler):
     def get(self):
         self.render("signup.html")
     def post(self):
-        self.user = self.request.get('user')
+        has_error = False
+        self.username = self.request.get('username')
+        self.password = self.request.get('password')
+        self.confirm = self.request.get('confirm')
+        self.email = self.request.get('email')
 
-        params = dict(user = self.user)
-        self.render('signup.html')
+        params = dict(username = self.username,
+                      email = self.email)
+
+        if not valid_name(self.username):
+            params['error_username'] = "Not a valid username"
+            has_error = True
+
+        if not valid_pass(self.password):
+            params['error_password'] = 'Not a valid password'
+            has_error = True
+
+        if not self.password != self.confirm:
+            params['error_confirm'] = "Passwords don't match"
+            has_error = True
+
+        if has_error:
+            self.render('signup.html', **params)
+        # else:
+        #     u = User.by_name(self.username)
+        #     if not u:
+        #         user = User.register()
         
-app = webapp2.WSGIApplication([('/', MainHandler),
+app = webapp2.WSGIApplication([('/', Front),
                                ('/signup', Signup),
                                 ], debug=True)
 
