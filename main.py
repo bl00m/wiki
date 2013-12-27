@@ -15,8 +15,9 @@
 # limitations under the License.
 #
 import os
-import user
+from user import User
 from util import valid_name, valid_pass, valid_email
+from util import make_secure_val
 
 import webapp2
 import jinja2
@@ -42,13 +43,21 @@ class MainHandler(webapp2.RequestHandler):
     def get(self):
         self.response.write('Hello world!')
 
-class Front(MainHandler):
+    def set_cookie(self, name, val):
+        secure_val = make_secure_val(val)
+        self.response.add_headers('Set-Cookie',
+                                  '%s=%s; Path=/' % (name, secure_val))
+
+    def check_cookie(self, cookie):
+        cookie_val = self.request.cookies.get(cookie)
+        return cookie_val and check_secure_val(cookie_val)
     def get(self):
         self.render("base.html")
 
 class Signup(MainHandler):
     def get(self):
         self.render("signup.html")
+
     def post(self):
         has_error = False
         self.username = self.request.get('username')
@@ -67,17 +76,22 @@ class Signup(MainHandler):
             params['error_password'] = 'Not a valid password'
             has_error = True
 
-        if not self.password != self.confirm:
+        elif self.password != self.confirm:
             params['error_confirm'] = "Passwords don't match"
             has_error = True
 
         if has_error:
             self.render('signup.html', **params)
-        # else:
-        #     u = User.by_name(self.username)
-        #     if not u:
-        #         user = User.register()
-        
+        else:
+            u = User.by_name(self.username)
+            if u:
+                message = "Username already exists"
+                self.render('signup.html', error_username = message) 
+            else:
+                user = User.register(self.username, self.password, self.email)
+                user.put()
+                self.redirect('/')
+
 app = webapp2.WSGIApplication([('/', Front),
                                ('/signup', Signup),
                                 ], debug=True)

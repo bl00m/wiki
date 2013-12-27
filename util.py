@@ -1,5 +1,6 @@
 import re
 import random
+import hashlib
 import hmac
 from string import letters
 
@@ -21,6 +22,20 @@ def valid_email(email):
 def make_salt(length = 5):
     return ''.join(random.choice(letters) for x in xrange(length))
 
-def salt_password(password, salt = None):
+def salt_password(name, password, salt = None):
 	if not salt:
 		salt = make_salt()
+	h = hashlib.sha256(name + password + salt).hexdigest()
+	return '%s,%s' % (salt, h)
+
+def verify_pw(name, password, h):
+	salt = h.split(',')[0]
+	return salt == salt_password(name, password, salt)
+
+def make_secure_val(val):
+	return "%s|%s" % (val, hmac.new(secret, val).hexdigest())
+
+def check_secure_val(val):
+	value = val.split('|')[0]
+	if make_secure_val(value) == val:
+		return value
