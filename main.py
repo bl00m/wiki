@@ -101,7 +101,6 @@ class Signup(MainHandler):
                 self.redirect('/')
 
 # login not working
-
 class Login(MainHandler):
     def get(self):
         self.render('login.html')
@@ -124,10 +123,25 @@ class Logout(MainHandler):
         self.logout() 
         self.redirect('/')
 
+class EditPage(MainHandler):
+    def get(self, page_id):
+        self.render('editpage.html')
+
+    def post(self, page_id):
+        self.render('editpage.html')
+
+class WikiPage(MainHandler):
+    def get(self, page_id):
+        pass
+
+PAGE_RE = r'(/(?:[a-zA-Z0-9_-]+/?)*)'
+
 app = webapp2.WSGIApplication([('/', MainHandler),
                                ('/signup', Signup),
                                ('/login', Login),
                                ('/logout', Logout),
+                               ('/_edit' + PAGE_RE, EditPage),
+                               (PAGE_RE, WikiPage),
                                 ], debug=True)
 
 

@@ -2,7 +2,7 @@
 
 {% block content %}
 <form method='post'>
-	<h2> Please signup</h2>
+	<h2> Please Signup</h2>
 	<table>
 		<tr>
 			<td id='label'>
@@ -51,7 +51,12 @@
 				{{error_email}}
 			</td>
 		</tr>
+
+		<tr>
+			<td>
+				<input id='submit' type='submit' value='Submit'/>
+			</td>
+		</tr>
 	</table>
-	<input type='submit' text='Submit'/>
 </form>
 {% endblock %}
