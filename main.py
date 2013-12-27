@@ -45,12 +45,19 @@ class MainHandler(webapp2.RequestHandler):
 
     def set_cookie(self, name, val):
         secure_val = make_secure_val(val)
-        self.response.add_headers('Set-Cookie',
+        self.response.headers.add_header('Set-Cookie',
                                   '%s=%s; Path=/' % (name, secure_val))
 
-    def check_cookie(self, cookie):
-        cookie_val = self.request.cookies.get(cookie)
+    def check_cookie(self, name):
+        cookie_val = self.request.cookies.get(name)
         return cookie_val and check_secure_val(cookie_val)
+
+    def login(self, username):
+        self.set_cookie('user_id', str(username.key().id()))
+
+    def logout(self):
+        self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
+
     def get(self):
         self.render("base.html")
 
@@ -90,10 +97,37 @@ class Signup(MainHandler):
             else:
                 user = User.register(self.username, self.password, self.email)
                 user.put()
+                self.login(user)
                 self.redirect('/')
 
-app = webapp2.WSGIApplication([('/', Front),
+# login not working
+
+class Login(MainHandler):
+    def get(self):
+        self.render('login.html')
+
+    def post(self):
+        username = self.request.get('username')
+        password = self.request.get('password')
+
+        valid_user = User.login(username, password)
+
+        if valid_user:
+            self.login(user)
+            self.redirect('/')
+        else:
+            msg = 'Incorrect login information'
+            self.render('login.html', error_username = msg)
+
+class Logout(MainHandler):
+    def get(self):
+        self.logout() 
+        self.redirect('/')
+
+app = webapp2.WSGIApplication([('/', MainHandler),
                                ('/signup', Signup),
+                               ('/login', Login),
+                               ('/logout', Logout),
                                 ], debug=True)
 
 

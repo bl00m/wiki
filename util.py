@@ -4,6 +4,8 @@ import hashlib
 import hmac
 from string import letters
 
+
+secret = 'hoppity'
 USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
 
 def valid_name(name):
@@ -26,10 +28,10 @@ def salt_password(name, password, salt = None):
 	if not salt:
 		salt = make_salt()
 	h = hashlib.sha256(name + password + salt).hexdigest()
-	return '%s,%s' % (salt, h)
+	return '%s|%s' % (salt, h)
 
 def verify_pw(name, password, h):
-	salt = h.split(',')[0]
+	salt = h.split('|')[0]
 	return salt == salt_password(name, password, salt)
 
 def make_secure_val(val):

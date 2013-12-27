@@ -1,4 +1,4 @@
-from util import make_salt, salt_password
+from util import make_salt, salt_password, verify_pw
 
 from google.appengine.ext import db
 
@@ -13,7 +13,7 @@ class User(db.Model):
 
 	@classmethod
 	def by_name(cls, name):
-		return User.all().filter('username =', name).get()
+		return cls.all().filter('username =', name).get()
 
 	@classmethod
 	def register(cls, name, password, email = None):
@@ -23,5 +23,12 @@ class User(db.Model):
 				   password = salted_pass, 
 				   email = email)
 		return user
+
+	@classmethod
+	def login(cls, name, pw):
+		user = cls.by_name(name)
+		if user and verify_pw(name, pw, user.password):
+			return user
+
 def users_key(group = 'default'):
 		return db.Key.from_path('users', group)
