@@ -4,7 +4,7 @@ from google.appengine.ext import db
 
 class User(db.Model):
 	username = db.StringProperty(required = True)
-	password = db.StringProperty(required = True)
+	pw_hash = db.StringProperty(required = True)
 	email = db.StringProperty()
 
 	@classmethod
@@ -20,14 +20,15 @@ class User(db.Model):
 		salted_pass = salt_password(name, password)
 		user = cls(parent = users_key(),
 				   username = name, 
-				   password = salted_pass, 
+				   pw_hash = salted_pass, 
 				   email = email)
 		return user
 
 	@classmethod
 	def login(cls, name, pw):
 		user = cls.by_name(name)
-		if user and verify_pw(name, pw, user.password):
+		print verify_pw(name, pw, user.pw_hash)
+		if user and verify_pw(name, pw, user.pw_hash):
 			return user
 
 def users_key(group = 'default'):

@@ -32,7 +32,7 @@ def salt_password(name, password, salt = None):
 
 def verify_pw(name, password, h):
 	salt = h.split('|')[0]
-	return salt == salt_password(name, password, salt)
+	return h == salt_password(name, password, salt)
 
 def make_secure_val(val):
 	return "%s|%s" % (val, hmac.new(secret, val).hexdigest())

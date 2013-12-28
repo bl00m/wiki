@@ -25,8 +25,6 @@ from db.post import Post
 import webapp2
 import jinja2
 
-# login not working
-
 PAGE_RE = r'(/?(?:[a-zA-Z0-9_-]+/?)*)'
 
 app = webapp2.WSGIApplication([('/', MainHandler),

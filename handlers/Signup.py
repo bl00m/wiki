@@ -1,5 +1,6 @@
 from handlers.MainHandler import MainHandler
 from util import valid_name, valid_pass, valid_email
+from db.user import User
 
 class Signup(MainHandler):
     def get(self):
