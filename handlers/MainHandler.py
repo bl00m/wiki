@@ -1,6 +1,7 @@
 import os
 from util import make_secure_val, check_secure_val
- 
+from db.user import User
+
 import webapp2
 import jinja2
 
@@ -44,3 +45,8 @@ class MainHandler(webapp2.RequestHandler):
 
     def get(self):
         self.render("base.html")
+
+    def initialize(self, *a, **kw):
+        webapp2.RequestHandler.initialize(self, *a, **kw)
+        user = self.check_cookie('user_id')
+        self.user = user and User.by_id(int(user))
