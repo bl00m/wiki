@@ -15,7 +15,7 @@ class Post(db.Model):
 
 	@classmethod
 	def by_title(cls, title):
-		return cls.all().filter('title=', title).get()
+		return cls.all().filter('title =', title).get()
 
 	@classmethod
 	def submit(cls, title, content):
