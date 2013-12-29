@@ -3,7 +3,9 @@
 {% block content %}
 	<form method='post'>
 		<h2>Enter content</h2>
-		<textarea rows='30' cols='60' name='content'>{{content}}</textarea>
+		<div>
+			<textarea rows='30' cols='60' name='content'>{{content}}</textarea>
+		</div>
 		<input id='submit' type='submit' value='Submit'/>
 	</form>
 {% endblock %}
