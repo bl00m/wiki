@@ -25,24 +25,21 @@ body, html {
 #header:visited {
 	color: #222;
 }
-#nav {
-	padding: 5px 10px;
-	display:none;
+
+#login-area {
+	position:absolute;
+	top: 10px;
+	right: 10px;
 }
 
-#nav ul {
-	margin:0;
-	padding:0;
-	list-style:none;
-	background:#c99;
+#login-link {
+	color:#999;
+	text-decoration:none;
 }
 
-#nav li {
-	display:inline;
-	padding:30px;
-	list-style: none;
+#login-link:visited {
+	color: #999;
 }
-
 #main {
 	float:left;
 	width: 478px;

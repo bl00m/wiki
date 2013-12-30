@@ -19,8 +19,9 @@ class MainHandler(webapp2.RequestHandler):
     def write(self, *args, **kw):
         self.response.out.write(*args, **kw)
 
-    def render_str(self, template, **kw):
-        return render_str(template, **kw)
+    def render_str(self, template, **params):
+        params['user'] = self.user
+        return render_str(template, **params)
 
     def render(self, template, **kw):
         self.write(self.render_str(template, **kw))
@@ -30,7 +31,8 @@ class MainHandler(webapp2.RequestHandler):
 
     def set_cookie(self, name, val):
         secure_val = make_secure_val(val)
-        self.response.headers.add_header('Set-Cookie',
+        self.response.headers.add_header(
+                                  'Set-Cookie',
                                   '%s=%s; Path=/' % (name, secure_val))
 
     def check_cookie(self, name):

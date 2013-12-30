@@ -3,10 +3,7 @@ from db.user import User
 
 class Login(MainHandler):
     def get(self):
-        if self.user:
-            self.redirect('/')
-        else:
-            self.render('login.html')
+        self.render('login.html')
 
     def post(self):
         username = self.request.get('username')

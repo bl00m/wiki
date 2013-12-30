@@ -8,11 +8,14 @@
 	<div id='wrap'>
 		<a href='/' id='header'>Wiki Final</a>
 
-		<div id='nav'>
-			<ul>
-				<li><a href=''>Option1</a></li>
-				<li><a href=''>Option2</a></li>
-			</ul>
+		<div id='login-area'>
+			{% if user %}
+				{{user.name}} <a id='login-link' href='/logout'>logout</a>
+			{% else %}
+				<a id='login-link' href='/login'>login</a>
+				|
+				<a id='login-link' href='/signup'>signup</a>
+			{% endif %}
 		</div>
 
 		<div id='main'>
