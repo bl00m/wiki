@@ -9,13 +9,15 @@
 		<a href='/' id='header'>Wiki Final</a>
 
 		<div id='login-area'>
+			{% block edit %}
 			{% if user %}
-				{{user.name}} <a id='login-link' href='/logout'>logout</a>
+				{{user.username}}  <a id='login-link' href='/logout'>(logout)</a>
 			{% else %}
 				<a id='login-link' href='/login'>login</a>
 				|
 				<a id='login-link' href='/signup'>signup</a>
 			{% endif %}
+			{% endblock %}
 		</div>
 
 		<div id='main'>
