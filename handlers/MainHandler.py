@@ -9,7 +9,7 @@ from google.appengine.ext import db
 
 templates_dir = os.path.join(os.path.dirname(__file__), '../templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(templates_dir),
-                               autoescape = True)
+                               autoescape = False)
 
 def render_str(template, **params):
     t = jinja_env.get_template(template)

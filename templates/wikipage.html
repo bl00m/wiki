@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 
+{% block edit %}
+	<a id='login-link' href='/_edit/{{post.title}}'>edit </a> | 
+{% endblock %}
 {% block content %}
 	<div>{{post.content}}</div>
 {% endblock %}

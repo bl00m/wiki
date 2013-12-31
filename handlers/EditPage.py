@@ -8,7 +8,7 @@ class EditPage(MainHandler):
         title = page_title_str(page_title)
 
         if self.user and valid_post(title):
-            self.redirect('/%s' % title)
+            self.render('editpage.html', content = Post.by_title(title).content)
 
         elif self.user and valid_title(title):
             self.render('editpage.html')
@@ -18,7 +18,13 @@ class EditPage(MainHandler):
 
     def post(self, page_title):
         title = page_title_str(page_title)
-        if self.user:
+
+        if self.user and valid_post(title):
+            content = self.request.get('content')
+            Post.submit(title, content)
+            self.redirect('/%s' % title)
+
+        elif self.user:
             content = self.request.get('content')
 
             Post.submit(title, content)
@@ -29,8 +35,8 @@ class EditPage(MainHandler):
 def page_title_str(page_title):
     return str(page_title.replace('/',''))
 
-def valid_post(page_title):
-    return page_title and Post.by_title(page_title) is not None
+def valid_post(title):
+    return title and Post.by_title(title) is not None
 
 def valid_title(title):
     return title and TITLE_RE.match(title)

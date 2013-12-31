@@ -3,7 +3,6 @@ from google.appengine.ext import db
 def posts_key(group = 'default'):
 	return db.Key.from_path("posts", group)
 
-#need by link name or something
 class Post(db.Model):
 	title = db.StringProperty(required = True)
 	content = db.TextProperty(required = True)
@@ -22,4 +21,10 @@ class Post(db.Model):
 		post = cls(parent = posts_key(), 
 				   title = title, 
 				   content = content)
+		post.put()
+
+	@classmethod
+	def update(cls, title, content):
+		post = cls.by_title(title)
+		post.content = content
 		post.put()
